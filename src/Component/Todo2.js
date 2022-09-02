@@ -1,8 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+// Get data from Local Storge
+const getData = () => {
+  let listData = localStorage.getItem("lists");
+  console.log(listData);
+  if (listData) {
+    return JSON.parse(localStorage.getItem("lists"));
+  } else {
+    return [];
+  }
+};
 
 export const Todo1 = () => {
   const [inputValue, setInputvalue] = useState("");
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(getData());
   const [editIndex, setEditIndex] = useState(null);
   const [editdata, setEditData] = useState("");
   // console.log(inputValue);
@@ -13,7 +24,6 @@ export const Todo1 = () => {
     } else {
       setItems([...items, inputValue]);
       setInputvalue(""); // For cleaning input when items is added
-      // console.log(inputValue);
     }
   }
 
@@ -26,12 +36,17 @@ export const Todo1 = () => {
   };
 
   const editConfirm = (id) => {
-    const updatedItems = [...items]
+    const updatedItems = [...items];
     updatedItems[id] = editdata;
     setInputvalue("");
     setItems(updatedItems);
-    setEditIndex(null)
+    setEditIndex(null);
   };
+
+  //   Add data to Local storage
+  useEffect(() => {
+    localStorage.setItem("lists", JSON.stringify(items));
+  }, [items]);
 
   return (
     <>
@@ -51,7 +66,6 @@ export const Todo1 = () => {
         {items.map((ele, id) => {
           return (
             <ul key={id}>
-              
               <li
                 style={{
                   display: "flex",
@@ -60,28 +74,44 @@ export const Todo1 = () => {
                   width: "40%",
                 }}
               >
-                {id === editIndex ? 
-                <input
-                  type="text"
-                  value={editdata}
-                  onChange={(e) => {
-                    setEditData(e.target.value);
-                  }}
-                />
-               : 
-                <h2>{ele}</h2>
-              }
-              {
-                id === editIndex ? <button disabled={!editdata.length} onClick={()=> editConfirm(id)}>Submit</button> : <><button
-                onClick={() => {
-                  itemDelete(id);
-                }}
-              >
-                Delete
-              </button>
-              {/* when we Click this button than we are setting setEditIndex to id and we are checking that our id === editIndex if true then submit btn renders otherWise Delete btn render */}
-              <button onClick={() =>{setEditData(ele); setEditIndex(id)}}>Edit</button> </>
-              }   
+                {id === editIndex ? (
+                  <input
+                    type="text"
+                    value={editdata}
+                    onChange={(e) => {
+                      setEditData(e.target.value);
+                    }}
+                  />
+                ) : (
+                  <h2>{ele}</h2>
+                )}
+                {id === editIndex ? (
+                  <button
+                    disabled={!editdata.length}
+                    onClick={() => editConfirm(id)}
+                  >
+                    Submit
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => {
+                        itemDelete(id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                    {/* when we Click this button than we are setting setEditIndex to id and we are checking that our id === editIndex if true then submit btn renders otherWise Delete btn render */}
+                    <button
+                      onClick={() => {
+                        setEditData(ele);
+                        setEditIndex(id);
+                      }}
+                    >
+                      Edit
+                    </button>{" "}
+                  </>
+                )}
               </li>
             </ul>
           );
