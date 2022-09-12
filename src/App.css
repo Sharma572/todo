@@ -1,16 +1,19 @@
-.main_container{
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  background-color: rgb(224, 220, 215);
-  height: 100vh;
+body{
+  background: url('./utils/bg.jpg');
+  background-position: center;
+  background-size: contain;
 }
-.eachItems{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+#todo-container{
+  /* From https://css.glass */
+background: rgba(255, 255, 255, 0.17);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(2.3px);
+-webkit-backdrop-filter: blur(5.3px);
+border: 1px solid rgba(255, 255, 255, 0.3);
 }
-
-#todo-logo{
-  height: 70px;
+#todo-container:hover{
+  -webkit-box-shadow: -4px 7px 34px -7px rgba(68,0,255,1);
+-moz-box-shadow: -4px 7px 34px -7px rgba(68,0,255,1);
+box-shadow: -4px 7px 34px -7px rgba(68,0,255,1);
 }

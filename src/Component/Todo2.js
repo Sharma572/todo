@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Button, TextField,Box } from "@mui/material";
+
 
 // Get data from Local Storge
 const getData = () => {
@@ -50,73 +52,104 @@ export const Todo1 = () => {
 
   return (
     <>
-      <h1>Todo From React</h1>
-      <input
-        type="text"
-        placeholder="Add Items"
+      <h1 style={{textAlign:"center"}}>Todo From React</h1>
+    <Box id="todo-container" sx={{display: 'flex',flexDirection: 'column',justifyContent: 'center',alignItem:'center' ,width:"50%", m:"auto",border:'1px solid blue',p:2}}>
+       <Box sx={{display: 'flex',width:"80%", m:"auto",justifyContent: 'center',alignItem:'center'}}>
+       <TextField
         value={inputValue}
         onChange={(e) => {
           setInputvalue(e.target.value);
         }}
+        id="standard-basic"
+        placeholder="Add List...."
+        variant="standard"
       />
-      <button disabled={!inputValue.length} onClick={addItems}>
+      <Button
+        variant="contained"
+        color="success"
+        sx={{ ml: 2 }}
+        disabled={!inputValue.length}
+        onClick={addItems}
+      >
         Add
-      </button>
-      <div>
+      </Button>
+       </Box>
+
+      <Box sx={{display: 'flex',flexDirection:"column",width:"80%", m:"auto",justifyContent: 'center',alignItem:'center'}}>
         {items.map((ele, id) => {
           return (
-            <ul key={id}>
+            <ul key={id}  style={{
+              display: "flex",
+              flexDirection:'column',
+              alignItems: "center",
+              width:"100%",
+              justifyContent: "space-between",
+              
+            }}>
               <li
                 style={{
                   display: "flex",
                   alignItems: "center",
+                  width:"80%",
                   justifyContent: "space-between",
-                  width: "40%",
+                  
                 }}
               >
                 {id === editIndex ? (
-                  <input
-                    type="text"
-                    value={editdata}
-                    onChange={(e) => {
-                      setEditData(e.target.value);
+                 <TextField
+                 value={editdata}
+                 onChange={(e) => {
+                   setEditData(e.target.value);
                     }}
-                  />
+                    sx={{mt:2 , mb:1}}
+                 id="standard-basic"
+                 variant="standard"
+               />
                 ) : (
-                  <h2>{ele}</h2>
+                  <p>{ele}</p>
                 )}
                 {id === editIndex ? (
-                  <button
-                    disabled={!editdata.length}
-                    onClick={() => editConfirm(id)}
-                  >
-                    Submit
-                  </button>
+
+<Button
+        variant="contained"
+        color="success"
+        sx={{ ml: 2 }}
+        disabled={!editdata.length}
+        onClick={() => editConfirm(id)}
+      >
+        Submit
+      </Button>
+
+        
                 ) : (
                   <>
-                    <button
+                    <Button
                       onClick={() => {
                         itemDelete(id);
                       }}
+                      variant="outlined"
+                      color="error"
                     >
                       Delete
-                    </button>
+                    </Button>
                     {/* when we Click this button than we are setting setEditIndex to id and we are checking that our id === editIndex if true then submit btn renders otherWise Delete btn render */}
-                    <button
-                      onClick={() => {
+                    
+                
+
+                    <Button variant="outlined" color="primary"  onClick={() => {
                         setEditData(ele);
                         setEditIndex(id);
-                      }}
-                    >
+                      }}>
                       Edit
-                    </button>{" "}
+                    </Button>{" "}
                   </>
                 )}
               </li>
             </ul>
           );
         })}
-      </div>
+      </Box>
+      </Box>
     </>
   );
 };
